@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Surprise!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(120deg, #ff8c00, #e0115f, #1e90ff, #32cd32);
+            background-size: 600% 600%;
+            animation: backgroundAnimate 10s ease infinite;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            perspective: 1000px;
+            position: relative;
+        }
+
+        /* back */
+        @keyframes backgroundAnimate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* text */
+        .birthday-text {
+            font-size: 60px;
+            font-weight: bold;
+            text-transform: uppercase;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateY(0deg);
+            white-space: nowrap;
+            animation: rotateText 7s infinite linear, changeColor 10s infinite alternate;
+        }
+
+        /* 3Dtext-rotation*/
+        @keyframes rotateText {
+            from {
+                transform: translate(-50%, -50%) rotateY(0deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotateY(360deg);
+            }
+        }
+
+        /* change-color */
+        @keyframes changeColor {
+            0% { color: #ff69b4; }
+            25% { color: #1e90ff; }
+            50% { color: #32cd32; }
+            75% { color: #ffa500; }
+            100% { color: #ff69b4; }
+        }
+
+        /* particle- */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: moveParticle 7s infinite;
+            will-change: transform, opacity;
+            cursor: pointer;
+        }
+
+        /* ballon */
+        .balloon {
+            background-color: rgba(255, 0, 0, 0.8);
+            border-radius: 60% 60% 60% 60%;
+        }
+
+        /* star */
+        .star {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 17px solid yellow;
+            position: relative;
+        }
+
+        .star:before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: -10px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 17px solid yellow;
+        }
+
+        /* heart */
+        .heart {
+            position: relative;
+            background-color: pink;
+            width: 20px;
+            height: 20px;
+            transform: rotate(-45deg);
+        }
+
+        .heart:before, .heart:after {
+            content: "";
+            position: absolute;
+            background-color: pink;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+        }
+
+        .heart:before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart:after {
+            top: 0;
+            left: 10px;
+        }
+
+        /* particle-move */
+        @keyframes moveParticle {
+            from {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-100vh) translateX(200px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* burst */
+        @keyframes burst {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="birthday-text">Happy Birthday to Kiku-no-hana!</div>
+
+    <!--create particles in JavaScript -->
+    <script>
+        const particleCount = 50;
+        const shapes = ['balloon', 'star', 'heart'];
+
+        // create
+        function createParticles() {
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
+                particle.classList.add('particle', randomShape);
+                document.body.appendChild(particle);
+
+                // random-
+                const size = Math.random() * 30 + 50;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * window.innerWidth}px`;
+                particle.style.top = `${Math.random() * window.innerHeight}px`;
+                particle.style.animationDuration = `${Math.random() * 5 + 3}s`;
+
+                // random-color-particle
+                if (randomShape === 'balloon') {
+                    particle.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                }
+
+                // when-click--burst-particle
+                particle.addEventListener('click', () => {
+                    particle.style.animation = 'burst 0.5s forwards';
+                    setTimeout(() => {
+                        particle.remove();
+                    }, 500);
+                });
+            }
+        }
+
+        // create-P
+        createParticles();
+    </script>
+
+</body>
+</html>
